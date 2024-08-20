@@ -14,9 +14,6 @@
 #-- 0. Declare libraries and functions --------------------------------------
 library(tidyverse) 
 library(FSA)
-library(DescTools)
-#library(coin)
-
 
 #-- 1. Import data ----------------------------------------------------------
 all <- readRDS("./data/y16_md_trap_suppression.Rds")

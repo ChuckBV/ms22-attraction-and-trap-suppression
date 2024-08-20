@@ -1,20 +1,31 @@
 #============================================================================
 # script2a_y16_trap_suppression_per1.R
 #
+# Analysis of the factorial model reveals a significant interaction beteen
+# blend and dispenser density (Wald chisq = 8.898, df = 2; P = 0.0117)
+#
+# 1-way ANOVA of Ald only found signficant differences (Wald chisqr = 48.758,
+# df = 2; P < 0.0001); sep was a,b,b
+#
+# 1-way ANOVA of Ald + TCP found signficant differences (Wald chisqr = 76.664,
+# df = 2; P < 0.0001); sep was a,b,c
+
+#
 # PARTS
-# 1. Import data (line 28)
-# 2. Produce summary statistics (line 60)
-# 3. Plot the data (line 73)
+# 1. Read data as found in the SAS scrip (line 117)
+# 2. Test factorial GLMM w NB (line 38)
+# 3. 1-way ANOVA for Aldehyde only (line 103)
 # 4. Perform non-parametric ANOVA (line 94)
 # 
 #============================================================================
 
 library(tidyverse)
 
+#---------------------------------------------------------------------------#
+#-- 1. Read data as found in the SAS script ---------------------------------
 
 dat <- read_csv("./data/y16_per1_sasdat.csv",
          col_types = c("f","i","i","c","d","i","c","i","i","f","f"))
-
 
 dat %>% 
   group_by(Blend,PerHa) %>% 
@@ -31,6 +42,9 @@ dat %>%
 # 4 Ald+TCP    17     4 62.5  16.0  
 # 5 Ald+TCP    30     4 14.8   3.64 
 # 6 Ald+TCP    69     4  3     0.816
+
+#--------------------------------------------------------------------------#
+#-- 2. Test factorial GLMM w NB --------------------------------------------
 
 ## Restart R
 
@@ -94,6 +108,9 @@ print(anova_result)
 # ---
 # Signif. codes:  0 ‘***’ 0.001 ‘**’ 0.01 ‘*’ 0.05 ‘.’ 0.1 ‘ ’ 1
 
+#----------------------------------------------------------------------------#
+#-- 3. 1-way ANOVA for Aldehyde only -----------------------------------------
+
 ### Model for Ald only
 ald_only <- dat[dat$Blend == "Ald",]
 
@@ -107,7 +124,7 @@ print(anova_result2)
 # 
 # Response: Plotsum
 #        Chisq Df Pr(>Chisq)    
-# PerHa 48.604  1  3.132e-12 ***
+# PerHa 48.758  2  2.584e-11 ***
 # ---
 # Signif. codes:  0 ‘***’ 0.001 ‘**’ 0.01 ‘*’ 0.05 ‘.’ 0.1 ‘ ’ 1
 
@@ -122,6 +139,10 @@ emmeans_nb2 <- emmeans(m2, "PerHa")
 # Results are given on the log (not the response) scale. 
 # P value adjustment: tukey method for comparing a family of 3 estimates 
 
+
+#----------------------------------------------------------------------------#
+#-- 4. 1-way ANOVA for Aldehyde + TCP ----------------------------------------
+
 ### Model for Ald + TCP
 ald_tcp <- dat[dat$Blend == "Ald+TCP",]
 
@@ -134,8 +155,8 @@ print(anova_result3)
 # Analysis of Deviance Table (Type II Wald chisquare tests)
 # 
 # Response: Plotsum
-#        Chisq Df Pr(>Chisq)    
-# PerHa 48.604  1  3.132e-12 ***
+# Chisq Df Pr(>Chisq)    
+# PerHa 76.664  2  < 2.2e-16 ***
 # ---
 # Signif. codes:  0 ‘***’ 0.001 ‘**’ 0.01 ‘*’ 0.05 ‘.’ 0.1 ‘ ’ 1
 
