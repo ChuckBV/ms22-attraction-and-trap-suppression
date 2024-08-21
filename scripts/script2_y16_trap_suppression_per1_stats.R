@@ -1,5 +1,5 @@
 #============================================================================
-# script2a_y16_trap_suppression_per1.R
+# script2_y16_trap_suppression_per1_stats.R
 #
 # Analysis of the factorial model reveals a significant interaction beteen
 # blend and dispenser density (Wald chisq = 8.898, df = 2; P = 0.0117)

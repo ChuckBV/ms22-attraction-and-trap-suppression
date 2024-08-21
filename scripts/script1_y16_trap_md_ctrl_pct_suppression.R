@@ -1,12 +1,11 @@
 #============================================================================
-# script1_y16_trap_suppression.R
+# script1_y16_trap_md_ctrl_pct_suppression.R
 #
 # PARTS
 # 0. Declare libraries and functions (line 15)
 # 1. Import data (line 28)
-# 2. Produce summary statistics (line 60)
-# 3. Plot the data (line 73)
-# 4. Perform non-parametric ANOVA (line 94)
+# 2.  MD (all) vs control (line 60)
+# 3. Kruskal test ctrl vs md by period (line 92)
 # 
 #============================================================================
 
@@ -89,6 +88,8 @@ Md_per
 100*(1 - 0.208/63) #99.7%
 ### Trap suppresion, Period 1
 100*(1 - 5.5/248) #97.8%
+
+#--3. Kruskal test ctrl vs md by period -------------------------------------
 
 ### Statistical sig, Period 1
 per1 <- all %>% 
