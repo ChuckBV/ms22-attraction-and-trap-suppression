@@ -24,24 +24,18 @@ library(tidyverse)
 #---------------------------------------------------------------------------#
 #-- 1. Read data as found in the SAS script ---------------------------------
 
-dat <- read_csv("./data/y16_per1_sasdat.csv",
-         col_types = c("f","i","i","c","d","i","c","i","i","f","f"))
+dat <- readRDS("./data/y16_md_trap_suppression.Rds")
 
-dat %>% 
-  group_by(Blend,PerHa) %>% 
-  summarise(nObs = n(),
-            mn = mean(Plotsum, na.rm = T),
-            sem = FSA::se(Plotsum))
-# # A tibble: 6 × 5
-# # Groups:   Blend [2]
-#   Blend   PerHa  nObs    mn    sem
-#   <chr>   <dbl> <int> <dbl>  <dbl>
-# 1 Ald        17     4 57    15.7  
-# 2 Ald        30     4 37.2  16.7  
-# 3 Ald        69     4  6.75  2.84 
-# 4 Ald+TCP    17     4 62.5  16.0  
-# 5 Ald+TCP    30     4 14.8   3.64 
-# 6 Ald+TCP    69     4  3     0.816
+# Get mean and SE by group 
+dat <- dat %>% 
+  mutate(PerHa = case_when(PerAcre == 0 ~ 0,
+                           PerAcre == 7 ~ 17,
+                           PerAcre == 12 ~ 30,
+                           .default = 69)) %>% 
+  filter(Period == 1 & PerHa > 0) %>% 
+  select(-c(P1:P4, ))
+
+dat 
 
 #--------------------------------------------------------------------------#
 #-- 2. Test factorial GLMM w NB --------------------------------------------
