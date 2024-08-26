@@ -93,7 +93,11 @@ ggsave(filename = "fig2b_trap_suppression_ald_tcp.jpg", plot = p2, device = "jpg
        dpi = 300, width = 2.83, height = 1.7, units = "in")
 
 # Plot the two plots together
-p3 <- ggpubr::ggarrange(p1,p2,ncol = 1, nrow = 2)
+p3 <- ggpubr::ggarrange(p1,p2,
+                        ncol = 1, 
+                        nrow = 2,
+                        labels = c("A)","B)"))
+p3
 
 ggsave(filename = "fig2_trap_suppression_both.jpg", plot = p3, device = "jpg", path = "./results/", 
        dpi = 300, width = 2.83, height = 3.4, units = "in")
