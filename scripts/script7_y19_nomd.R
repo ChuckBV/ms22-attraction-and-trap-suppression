@@ -1,5 +1,5 @@
 #============================================================================
-# script6_y16_nomd.R
+# script7_y16_nomd.R
 #
 # Read and graph data from an August 2019 experiment comparing NOW trapping
 # with sections of MESO (mating disruption) dispensers with Ald only, or
@@ -80,16 +80,17 @@ trt_means
 # 7 AldTCP_12in         8 31.9    5.34  
 # 8 NowBiolure          8 70.9    7.92 
 
-write.csv(trt_means,"./output/expt1_means_se.csv", row.names = FALSE)
+write.csv(trt_means,"./results/y16_nonmd_trt_means_se.csv", row.names = FALSE)
 
-#-- 3. ggplot of adults trapped by treatment --------
+#-- 3. ggplot of adults trapped by treatment (not used) --------
 
-p2 <- ggplot(exp_unit_means, aes(x = lure, y = Count)) +
-  geom_boxplot() +
+p2 <- ggplot(trt_means, aes(x = lure, y = mn)) +
+  geom_col() +
+  geom_errorbar(mapping = aes(ymin = mn, ymax = mn + sem)) +
   theme_bw() +
   xlab("") +
   ylab("NOW per trap per week") +
-  scale_y_continuous(trans = log2_trans())+#,
+  #scale_y_continuous(trans = log2_trans())+#,
   #                     breaks = trans_breaks("log2", function(x) 2^x),
   #                     labels = trans_format("log2", math_format(2^.x))) +
   theme(axis.text.x = element_text(color = "black", size = 7, angle = 45, hjust = 1),
@@ -101,9 +102,9 @@ p2 <- ggplot(exp_unit_means, aes(x = lure, y = Count)) +
 
 p2
 
-ggsave(filename = "y19-mike-woolf-mesos-overall.jpg", p2,
-       path = "./output",
-       width = 5.83, height = 3.91, dpi = 300, units = "in", device='jpg')
+# ggsave(filename = "y19-mike-woolf-mesos-overall.jpg", p2,
+#        path = "./results/",
+#        width = 5.83, height = 3.91, dpi = 300, units = "in", device='jpg')
 
 #-- 4. stats ------------------------------------------
 
