@@ -17,7 +17,6 @@ md_means <- dat %>%
                            PerAcre == 12 ~ 30,
                            .default = 69)) %>% 
   filter(Period == 3 & PerHa > 0) %>% 
-  
   group_by(Blend,PerHa) %>% 
   summarise(nObs = n(),
             mn = mean(Plotsum, na.rm = T),
@@ -56,7 +55,7 @@ p1 <- ggplot(Ald, aes(x = PerHa, y = mn)) +
   ylim(0,19) +
   theme_bw() +
   xlab("Dispensers per ha") +
-  ylab("Males per plot") +
+  ylab("Males") +
   theme(axis.text.x = element_text(color = "black", size = 10), 
         axis.text.y = element_text(color = "black", size = 10),
         axis.title.x = element_text(color = "black", size = 10),
@@ -77,7 +76,7 @@ p2 <- ggplot(Ald_tcp, aes(x = PerHa, y = mn)) +
   ylim(0,19) +
   theme_bw() +
   xlab("Dispensers per ha") +
-  ylab("Males per plot") +
+  ylab("Males") +
   theme(axis.text.x = element_text(color = "black", size = 10), 
         axis.text.y = element_text(color = "black", size = 10),
         axis.title.x = element_text(color = "black", size = 10),
@@ -91,7 +90,11 @@ ggsave(filename = "fig3b_trap_suppression_ald_tcp.jpg", plot = p2, device = "jpg
        dpi = 300, width = 2.83, height = 1.7, units = "in")
 
 # Plot the two plots together
-p3 <- ggpubr::ggarrange(p1,p2,ncol = 1, nrow = 2)
+p3 <- ggpubr::ggarrange(p1,p2,
+                        ncol = 1, 
+                        nrow = 2,
+                        labels = c("A)","B)"))
+p3
 
 ggsave(filename = "fig3_trap_suppression_both.jpg", plot = p3, device = "jpg", path = "./results/", 
        dpi = 300, width = 2.83, height = 3.4, units = "in")

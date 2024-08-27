@@ -58,7 +58,7 @@ p1 <- ggplot(Ald, aes(x = PerHa, y = mn)) +
   ylim(0,90) +
   theme_bw() +
   xlab("Dispensers per ha") +
-  ylab("Males per plot") +
+  ylab("Males") +
   theme(axis.text.x = element_text(color = "black", size = 10), 
         axis.text.y = element_text(color = "black", size = 10),
         axis.title.x = element_text(color = "black", size = 10),
@@ -79,7 +79,7 @@ p2 <- ggplot(Ald_tcp, aes(x = PerHa, y = mn)) +
   ylim(0,90) +
   theme_bw() +
   xlab("Dispensers per ha") +
-  ylab("Males per plot") +
+  ylab("Males") +
   theme(axis.text.x = element_text(color = "black", size = 10), 
         axis.text.y = element_text(color = "black", size = 10),
         axis.title.x = element_text(color = "black", size = 10),
