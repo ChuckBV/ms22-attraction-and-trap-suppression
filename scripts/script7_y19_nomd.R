@@ -1,5 +1,5 @@
 #============================================================================
-# script7_y16_nomd.R
+# script7_y19_nonmd.R
 #
 # Read and graph data from an August 2019 experiment comparing NOW trapping
 # with sections of MESO (mating disruption) dispensers with Ald only, or
@@ -113,8 +113,9 @@ exp_unit_sums <- mwoolf %>%
   group_by(lure,row) %>%
   summarise(Sum = sum(Count, na.rm = TRUE))
 
-# output for use with SAS
-write.csv(exp_unit_sums,"./data/dat1.csv", row.names = FALSE)
+# output for use statistical analysis
+# write.csv(exp_unit_sums,"./data/y19_nonmd_trapsums.csv", row.names = FALSE)
+saveRDS(exp_unit_sums,"./data/y19_nonmd_trapsums.Rds")
 
 # will want descending order for posthoc test
 # exp_unit_sums$lure <- factor(exp_unit_sums$lure, levels = rev(exp_unit_sums$lure))
