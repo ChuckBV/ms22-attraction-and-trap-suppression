@@ -13,52 +13,54 @@ library(car)
 library(emmeans)
 
 # Load data
-dat <- readRDS("./data/y19_nonmd_trapsums.Rds")
+dat <- readRDS("./data/y19_md_trapsums.Rds")
 #     NB lure and row both are and ought to be factors
+
+# Didn't actually get sums
 
 # run model
 model <- glmer.nb(Sum ~ lure + (1 | row), data = dat)
 
 summary(model)
 # Generalized linear mixed model fit by maximum likelihood (Laplace Approximation) ['glmerMod']
-#  Family: Negative Binomial(4.3046)  ( log )
+# Family: Negative Binomial(1.8913)  ( log )
 # Formula: Sum ~ lure + (1 | row)
-#    Data: dat
+# Data: dat
 # 
 # AIC      BIC   logLik deviance df.resid 
-# 486.5    508.1   -233.3    466.5       54 
+# 397.8    419.4   -188.9    377.8       54 
 # 
 # Scaled residuals: 
 #   Min      1Q  Median      3Q     Max 
-# -1.4830 -0.6600 -0.2596  0.5087  3.1277 
+# -1.3344 -0.5619 -0.2922  0.5422  2.9075 
 # 
 # Random effects:
-#   Groups Name        Variance Std.Dev.
-# row    (Intercept) 0.03539  0.1881  
+# Groups Name        Variance Std.Dev.
+# row    (Intercept) 0.02439  0.1562  
 # Number of obs: 64, groups:  row, 8
 # 
 # Fixed effects:
 #   Estimate Std. Error z value Pr(>|z|)    
-# (Intercept)           5.5984     0.1847  30.303  < 2e-16 ***
-# lureAldTCP_12in      -0.7717     0.2455  -3.144  0.00167 ** 
-# lureAldTCP_4in       -1.1558     0.2487  -4.647 3.36e-06 ***
-# lureAldTCP_1in       -1.1100     0.2495  -4.449 8.61e-06 ***
-# lureCidetrakNOW_8in  -4.5660     0.3214 -14.206  < 2e-16 ***
-# lureCidetrakNOW_4in  -4.3210     0.3063 -14.106  < 2e-16 ***
-# lureCidetrakNOW_1in  -4.5253     0.3193 -14.173  < 2e-16 ***
-# lureBlankCtrl        -7.6917     1.0294  -7.472 7.89e-14 ***
+# (Intercept)           -2.095      1.035  -2.024  0.04295 *  
+# lureCidetrakNOW_1in    1.386      1.176   1.179  0.23842    
+# lureCidetrakNOW_4in    3.362      1.081   3.111  0.00186 ** 
+# lureCidetrakNOW_8in    3.169      1.084   2.924  0.00346 ** 
+# lureAldTCP_1in         4.805      1.070   4.489 7.15e-06 ***
+# lureAldTCP_4in         5.917      1.066   5.552 2.83e-08 ***
+# lureAldTCP_12in        5.446      1.067   5.106 3.29e-07 ***
+# lureBiolurePpo         6.025      1.067   5.645 1.65e-08 ***
 # ---
 # Signif. codes:  0 ‘***’ 0.001 ‘**’ 0.01 ‘*’ 0.05 ‘.’ 0.1 ‘ ’ 1
 # 
 # Correlation of Fixed Effects:
-#             (Intr) lATCP_12 lATCP_4 lrATCP_1 lCNOW_8 lCNOW_4 lCNOW_1
-# lrAldTCP_12 -0.656                                                  
-# lrAldTCP_4n -0.654  0.497                                           
-# lrAldTCP_1n -0.648  0.489    0.501                                  
-# lrCdtrNOW_8 -0.503  0.383    0.385   0.382                          
-# lrCdtrNOW_4 -0.526  0.396    0.398   0.398    0.305                 
-# lrCdtrNOW_1 -0.506  0.385    0.389   0.381    0.296   0.305         
-# lurBlnkCtrl -0.157  0.119    0.119   0.119    0.091   0.095   0.092 
+# (Intr) lCNOW_1 lCNOW_4 lCNOW_8 lrATCP_1 lATCP_4 lATCP_12
+# lrCdtrNOW_1 -0.876                                                  
+# lrCdtrNOW_4 -0.953  0.839                                           
+# lrCdtrNOW_8 -0.950  0.837   0.910                                   
+# lrAldTCP_1n -0.960  0.847   0.922   0.920                           
+# lrAldTCP_4n -0.967  0.851   0.926   0.923   0.934                   
+# lrAldTCP_12 -0.967  0.850   0.924   0.922   0.932    0.938          
+# lureBiolrPp -0.968  0.850   0.924   0.921   0.929    0.938   0.938  
 
 anova_result <- Anova(model, type = "II")
 print(anova_result)
@@ -66,7 +68,7 @@ print(anova_result)
 # 
 # Response: Sum
 #       Chisq Df Pr(>Chisq)    
-# lure 513.67  7  < 2.2e-16 ***
+# lure 146.84  7  < 2.2e-16 ***
 # ---
 # Signif. codes:  0 ‘***’ 0.001 ‘**’ 0.01 ‘*’ 0.05 ‘.’ 0.1 ‘ ’ 1
 

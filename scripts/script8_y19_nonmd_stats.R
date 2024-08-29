@@ -25,7 +25,7 @@ summary(model)
 # Formula: Sum ~ lure + (1 | row)
 #    Data: dat
 # 
-# AIC      BIC   logLik deviance df.resid 
+# AIC      BIC   logLik deviance   df.resid 
 # 486.5    508.1   -233.3    466.5       54 
 # 
 # Scaled residuals: 

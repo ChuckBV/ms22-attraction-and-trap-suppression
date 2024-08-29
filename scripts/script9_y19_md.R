@@ -63,9 +63,6 @@ dat <- mutate(dat,lure = factor(lure, levels=trt_names2))
 dat$row <- as.factor(dat$row)
 head(dat,3)
 
-# Save vverde data set as R data set
-saveRDS(dat,"./data/y19_md_trapsums.Rds")
-
 ### How many weeks
 dat %>% 
   group_by(EndDate) %>% 
@@ -94,14 +91,14 @@ trt_means
 # A tibble: 8 x 4
 # lure             nObs      mn    sem
 # <fct>           <int>   <dbl>  <dbl>
-# 1 NowBiolure          8  0.0625 0.0625
-# 2 CidetrakNOW_1in     8  0.25   0.0945
-# 3 CidetrakNOW_4in     8  1.81   0.619 
-# 4 CidetrakNOW_8in     8  1.5    0.366 
-# 5 AldTCP_1in          8  7.88   2.98  
-# 6 AldTCP_4in          8 23.9    4.95  
-# 7 AldTCP_12in         8 14.4    3.53  
-# 8 BiolurePpo          8 25.3    3.51 
+# 1 NowBiolure          8  0.0625 0.0625a
+# 2 CidetrakNOW_1in     8  0.25   0.0945a
+# 3 CidetrakNOW_4in     8  1.81   0.619b 
+# 4 CidetrakNOW_8in     8  1.5    0.366a 
+# 5 AldTCP_1in          8  7.88   2.98c  
+# 6 AldTCP_4in          8 23.9    4.95d  
+# 7 AldTCP_12in         8 14.4    3.53d  
+# 8 BiolurePpo          8 25.3    3.51d 
 
 #-- 3. Box plot of treatment effects  ---------------------------------------
 
@@ -135,7 +132,8 @@ exp_unit_sums <- dat %>%
   summarise(Sum = sum(Count, na.rm = TRUE))
 
 # output experimental unit means for SAS
-write.csv(exp_unit_sums,"./data/dat2.csv", row.names = FALSE)
+#write.csv(exp_unit_sums,"./data/dat2.csv", row.names = FALSE)
+saveRDS(exp_unit_sums,"./data/y19_md_trapsums.Rds")
 
 # will want descending order for posthoc test
 trt_names3 <- trt_names2[c(8,6,7,5,3,4,2,1)]   
