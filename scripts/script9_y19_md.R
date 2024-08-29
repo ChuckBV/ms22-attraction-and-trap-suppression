@@ -30,7 +30,7 @@ trt_names2 <- c("BiolurePpo","CidetrakNOW_1in","CidetrakNOW_4in","CidetrakNOW_8i
 trt_names2 <- trt_names2[c(8,2:7,1)] # desired order of consideration
 trt_names2
 
-trt_key <- read_csv("./data/trt_key.csv")
+trt_key <- read_csv("./data/y19_nonmd_trt_key.csv")
 trt_key <-select(trt_key,trap_id,lure)
 
 #-- 1. Read in data -----------------------------------------
@@ -63,6 +63,8 @@ dat <- mutate(dat,lure = factor(lure, levels=trt_names2))
 dat$row <- as.factor(dat$row)
 head(dat,3)
 
+# Save vverde data set as R data set
+saveRDS(dat,"./data/y19_md_trapsums.Rds")
 
 ### How many weeks
 dat %>% 
@@ -70,4 +72,94 @@ dat %>%
   summarise(nObs = sum(!is.na(Count)))
 # EndDate     nObs
 # <date>     <int>
-# 1 2019-09-
+# 1 2019-09-03    63
+# 2 2019-09-10    63
+## Dates are 8/28 to 9/10
+
+#-- 2. Numerical means and SE in table  ---------------------------------------
+
+exp_unit_means <- dat %>%
+  group_by(lure,row) %>%
+  summarise(Count = mean(Count, na.rm = TRUE))
+
+trt_means <- exp_unit_means %>%
+  group_by(lure) %>%
+  summarise(nObs = sum(!is.na(Count)),
+            mn = mean(Count, na.rm = TRUE),
+            sem = se(Count))
+
+write.csv(trt_means,"./output/expt2_means_se.csv", row.names = FALSE)
+
+trt_means
+# A tibble: 8 x 4
+# lure             nObs      mn    sem
+# <fct>           <int>   <dbl>  <dbl>
+# 1 NowBiolure          8  0.0625 0.0625
+# 2 CidetrakNOW_1in     8  0.25   0.0945
+# 3 CidetrakNOW_4in     8  1.81   0.619 
+# 4 CidetrakNOW_8in     8  1.5    0.366 
+# 5 AldTCP_1in          8  7.88   2.98  
+# 6 AldTCP_4in          8 23.9    4.95  
+# 7 AldTCP_12in         8 14.4    3.53  
+# 8 BiolurePpo          8 25.3    3.51 
+
+#-- 3. Box plot of treatment effects  ---------------------------------------
+
+p3 <- ggplot(trt_means, aes(x = lure, y = mn)) +
+  geom_col() +
+  geom_errorbar(mapping = aes(ymin = mn, ymax = mn + sem)) +
+  theme_bw() +
+  xlab("") +
+  ylab("NOW per trap per week") +
+  #scale_y_continuous(trans = log2_trans())+#,
+  #                     breaks = trans_breaks("log2", function(x) 2^x),
+  #                     labels = trans_format("log2", math_format(2^.x))) +
+  theme(axis.text.x = element_text(color = "black", size = 7, angle = 45, hjust = 1),
+        axis.text.y = element_text(color = "black", size = 8),
+        axis.title.x = element_text(color = "black", size = 9),
+        axis.title.y = element_text(color = "black", size = 9),
+        legend.title = element_text(color = "black", size = 14),
+        legend.text = element_text(color = "black", size = 14))
+
+p3
+
+ggsave(filename = "y19-vistaverde-mesos-overall.jpg", p3, 
+       path = "./results",
+       width = 5.83, height = 3.91, dpi = 300, units = "in", device='jpg')
+
+#-- 4. stats ------------------------------------------
+
+# Pools monitoring intervals (sum rather than mean for analysis)
+exp_unit_sums <- dat %>%
+  group_by(lure,row) %>%
+  summarise(Sum = sum(Count, na.rm = TRUE))
+
+# output experimental unit means for SAS
+write.csv(exp_unit_sums,"./data/dat2.csv", row.names = FALSE)
+
+# will want descending order for posthoc test
+trt_names3 <- trt_names2[c(8,6,7,5,3,4,2,1)]   
+exp_unit_sums <- mutate(exp_unit_sums,lure = factor(lure, levels=trt_names3))
+levels(exp_unit_sums$lure)
+# [1] "BiolurePpo"      "AldTCP_4in"      "AldTCP_12in"     "AldTCP_1in"      "CidetrakNOW_4in" "CidetrakNOW_8in" "CidetrakNOW_1in" "NowBiolure"       
+
+# Use Desc to obtain Kruskall-Wallis test
+Desc(Sum ~ lure, data = exp_unit_sums)
+
+# Kruskal-Wallis rank sum test:
+#   Kruskal-Wallis chi-squared = 45.295, df = 7, p-value = 1.199e-07
+
+# Dunn Test from FSA per https://rcompanion.org/rcompanion/d_06.html
+PT = dunnTest(Sum ~ lure,
+              data=exp_unit_sums,
+              method="bh")    
+# Can adjust p-values;
+# See ?p.adjust for options
+
+PT
+# Dunn (1964) Kruskal-Wallis multiple comparison
+# p-values adjusted with the Benjamini-Hochberg method.
+
+# Output to Excel because there are 28 comparisons
+p_tble_md <- PT$res
+write.csv(p_tble_md,"./output/dunn_test_md.csv", row.names = FALSE)
