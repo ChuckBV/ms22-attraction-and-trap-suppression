@@ -104,7 +104,7 @@ print(anova_result2)
 # Analysis of Deviance Table (Type II Wald chisquare tests)
 # 
 # Response: Plotsum
-# Chisq Df Pr(>Chisq)
+#        Chisq Df Pr(>Chisq)
 # PerHa 3.1926  2     0.2026
 
 # Results are given on the log (not the response) scale. 

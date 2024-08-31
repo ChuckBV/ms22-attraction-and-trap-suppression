@@ -51,7 +51,7 @@ library(emmeans)
 
 dat$PerHa <- factor(dat$PerHa, levels = unique(dat$PerHa))
 
-model <- glmer.nb(Plotsum ~ Blend * PerHa + (1 | Rep), data = dat)
+model <- lme4::glmer.nb(Plotsum ~ Blend * PerHa + (1 | Rep), data = dat)
 
 summary(model)
 # Generalized linear mixed model fit by maximum likelihood (Laplace Approximation) ['glmerMod']
@@ -90,12 +90,12 @@ summary(model)
 # BA+TCP:PH30  0.251 -0.650  -0.674 -0.243           
 # BA+TCP:PH69  0.188 -0.477  -0.229 -0.623  0.306    
 
-anova_result <- Anova(model, type = "II")
+car::anova_result <- Anova(model, type = "II")
 print(anova_result)
 # Analysis of Deviance Table (Type II Wald chisquare tests)
 # 
 # Response: Plotsum
-# Chisq Df Pr(>Chisq)    
+#                Chisq Df Pr(>Chisq)    
 # Blend         4.9775  1    0.02568 *  
 # PerHa       127.1350  2    < 2e-16 ***
 # Blend:PerHa   8.8980  2    0.01169 *  
@@ -108,7 +108,7 @@ print(anova_result)
 ### Model for Ald only
 ald_only <- dat[dat$Blend == "Ald",]
 
-m2 <- glmer.nb(Plotsum ~ PerHa + (1 | Rep), data = ald_only)
+m2 <- lme4::glmer.nb(Plotsum ~ PerHa + (1 | Rep), data = ald_only)
 
 summary(m2)
 

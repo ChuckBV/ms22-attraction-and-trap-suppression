@@ -4,7 +4,7 @@
 # PARTS
 # 0. Declare libraries and functions (line 15)
 # 1. Import data (line 28)
-# 2.  MD (all) vs control (line 60)
+# 2. MD (all) vs control (line 60)
 # 3. Kruskal test ctrl vs md by period (line 92)
 # 
 #============================================================================
