@@ -8,7 +8,7 @@
 
 ### Full factorial model
 library(lme4)
-library(MASS)
+#library(MASS)
 library(car)
 library(emmeans)
 
@@ -28,8 +28,6 @@ unique(dat$lure)
 # [1] NowBiolure      CidetrakNOW_1in CidetrakNOW_4in CidetrakNOW_8in AldTCP_1in      AldTCP_4in     
 # [7] AldTCP_12in     BiolurePpo     
 # 8 Levels: NowBiolure CidetrakNOW_1in CidetrakNOW_4in CidetrakNOW_8in AldTCP_1in AldTCP_4in ... BiolurePpo
-
-# Didn't actually get sums
 
 # run model
 model <- glmer.nb(Sum ~ lure + (1 | row), data = dat)
@@ -88,34 +86,34 @@ print(anova_result)
 emmeans_nb <- emmeans(model, "lure")
 pairs(emmeans_nb)
 # contrast                          estimate    SE  df z.ratio p.value
-# NowBiolure - AldTCP_12in            0.7717 0.245 Inf   3.144  0.0356
-# NowBiolure - AldTCP_4in             1.1558 0.249 Inf   4.647  0.0001
-# NowBiolure - AldTCP_1in             1.1100 0.249 Inf   4.449  0.0002
-# NowBiolure - CidetrakNOW_8in        4.5660 0.321 Inf  14.206  <.0001
-# NowBiolure - CidetrakNOW_4in        4.3210 0.306 Inf  14.106  <.0001
-# NowBiolure - CidetrakNOW_1in        4.5253 0.319 Inf  14.173  <.0001
-# NowBiolure - BlankCtrl              7.6917 1.029 Inf   7.472  <.0001
-# AldTCP_12in - AldTCP_4in            0.3841 0.248 Inf   1.550  0.7803
-# AldTCP_12in - AldTCP_1in            0.3383 0.250 Inf   1.352  0.8788
-# AldTCP_12in - CidetrakNOW_8in       3.7943 0.321 Inf  11.817  <.0001
-# AldTCP_12in - CidetrakNOW_4in       3.5493 0.308 Inf  11.541  <.0001
-# AldTCP_12in - CidetrakNOW_1in       3.7536 0.319 Inf  11.758  <.0001
-# AldTCP_12in - BlankCtrl             6.9200 1.030 Inf   6.722  <.0001
-# AldTCP_4in - AldTCP_1in            -0.0458 0.249 Inf  -0.184  1.0000
-# AldTCP_4in - CidetrakNOW_8in        3.4102 0.322 Inf  10.598  <.0001
-# AldTCP_4in - CidetrakNOW_4in        3.1652 0.308 Inf  10.264  <.0001
-# AldTCP_4in - CidetrakNOW_1in        3.3694 0.319 Inf  10.549  <.0001
-# AldTCP_4in - BlankCtrl              6.5359 1.030 Inf   6.347  <.0001
-# AldTCP_1in - CidetrakNOW_8in        3.4560 0.323 Inf  10.701  <.0001
-# AldTCP_1in - CidetrakNOW_4in        3.2110 0.309 Inf  10.406  <.0001
-# AldTCP_1in - CidetrakNOW_1in        3.4152 0.322 Inf  10.619  <.0001
-# AldTCP_1in - BlankCtrl              6.5817 1.030 Inf   6.390  <.0001
-# CidetrakNOW_8in - CidetrakNOW_4in  -0.2450 0.370 Inf  -0.662  0.9979
-# CidetrakNOW_8in - CidetrakNOW_1in  -0.0408 0.380 Inf  -0.107  1.0000
-# CidetrakNOW_8in - BlankCtrl         3.1257 1.050 Inf   2.977  0.0584
-# CidetrakNOW_4in - CidetrakNOW_1in   0.2042 0.369 Inf   0.554  0.9993
-# CidetrakNOW_4in - BlankCtrl         3.3707 1.046 Inf   3.223  0.0278
-# CidetrakNOW_1in - BlankCtrl         3.1665 1.049 Inf   3.018  0.0519
-
-Results are given on the log (not the response) scale. 
-P value adjustment: tukey method for comparing a family of 8 estimates 
+# NowBiolure - CidetrakNOW_1in        -1.386 1.176 Inf  -1.179  0.9381
+# NowBiolure - CidetrakNOW_4in        -3.362 1.081 Inf  -3.111  0.0393
+# NowBiolure - CidetrakNOW_8in        -3.169 1.084 Inf  -2.924  0.0679
+# NowBiolure - AldTCP_1in             -4.805 1.070 Inf  -4.489  0.0002
+# NowBiolure - AldTCP_4in             -5.917 1.066 Inf  -5.552  <.0001
+# NowBiolure - AldTCP_12in            -5.446 1.067 Inf  -5.106  <.0001
+# NowBiolure - BiolurePpo             -6.025 1.067 Inf  -5.645  <.0001
+# CidetrakNOW_1in - CidetrakNOW_4in   -1.976 0.646 Inf  -3.057  0.0464
+# CidetrakNOW_1in - CidetrakNOW_8in   -1.782 0.652 Inf  -2.735  0.1121
+# CidetrakNOW_1in - AldTCP_1in        -3.419 0.630 Inf  -5.426  <.0001
+# CidetrakNOW_1in - AldTCP_4in        -4.530 0.621 Inf  -7.294  <.0001
+# CidetrakNOW_1in - AldTCP_12in       -4.060 0.623 Inf  -6.520  <.0001
+# CidetrakNOW_1in - BiolurePpo        -4.639 0.624 Inf  -7.438  <.0001
+# CidetrakNOW_4in - CidetrakNOW_8in    0.194 0.458 Inf   0.423  0.9999
+# CidetrakNOW_4in - AldTCP_1in        -1.443 0.424 Inf  -3.400  0.0155
+# CidetrakNOW_4in - AldTCP_4in        -2.554 0.413 Inf  -6.185  <.0001
+# CidetrakNOW_4in - AldTCP_12in       -2.084 0.418 Inf  -4.990  <.0001
+# CidetrakNOW_4in - BiolurePpo        -2.663 0.419 Inf  -6.362  <.0001
+# CidetrakNOW_8in - AldTCP_1in        -1.637 0.431 Inf  -3.794  0.0037
+# CidetrakNOW_8in - AldTCP_4in        -2.748 0.422 Inf  -6.518  <.0001
+# CidetrakNOW_8in - AldTCP_12in       -2.278 0.425 Inf  -5.366  <.0001
+# CidetrakNOW_8in - BiolurePpo        -2.857 0.428 Inf  -6.673  <.0001
+# AldTCP_1in - AldTCP_4in             -1.111 0.387 Inf  -2.871  0.0785
+# AldTCP_1in - AldTCP_12in            -0.641 0.393 Inf  -1.630  0.7320
+# AldTCP_1in - BiolurePpo             -1.220 0.403 Inf  -3.029  0.0503
+# AldTCP_4in - AldTCP_12in             0.470 0.376 Inf   1.251  0.9166
+# AldTCP_4in - BiolurePpo             -0.109 0.377 Inf  -0.289  1.0000
+# AldTCP_12in - BiolurePpo            -0.579 0.377 Inf  -1.536  0.7881
+# 
+# Results are given on the log (not the response) scale. 
+# P value adjustment: tukey method for comparing a family of 8 estimates
