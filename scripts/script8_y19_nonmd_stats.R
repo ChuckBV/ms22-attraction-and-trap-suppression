@@ -102,5 +102,5 @@ pairs(emmeans_nb)
 # CidetrakNOW_4in - BlankCtrl         3.3707 1.046 Inf   3.223  0.0278
 # CidetrakNOW_1in - BlankCtrl         3.1665 1.049 Inf   3.018  0.0519
 
-Results are given on the log (not the response) scale. 
-P value adjustment: tukey method for comparing a family of 8 estimates 
+# Results are given on the log (not the response) scale. 
+# P value adjustment: tukey method for comparing a family of 8 estimates 
