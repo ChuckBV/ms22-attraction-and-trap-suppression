@@ -47,6 +47,9 @@ head(vverde,3)
 # 2     1     2 AldTCP_12in 8/28/2019 9/3/2019      12    30
 # 3     1     3 BlankCtrl   8/28/2019 9/3/2019      13    34
 
+#  Note that treatments for the second 2019 trial (MD) were mislabelled
+#  Fixed line 64
+
 ### Merge onto trt_key
 dat <- left_join(trt_key,vverde)
 head(dat,3)
@@ -62,6 +65,11 @@ dat$lure[dat$lure == "BlankCtrl"] <- "BiolurePpo"
 dat <- mutate(dat,lure = factor(lure, levels=trt_names2))
 dat$row <- as.factor(dat$row)
 head(dat,3)
+
+unique(dat$lure)
+# 1] AldTCP_4in      AldTCP_12in     BiolurePpo      CidetrakNOW_4in NowBiolure      CidetrakNOW_1in
+# [7] CidetrakNOW_8in AldTCP_1in     
+# 8 Levels: NowBiolure CidetrakNOW_1in CidetrakNOW_4in CidetrakNOW_8in AldTCP_1in AldTCP_4in ... BiolurePpo
 
 ### How many weeks
 dat %>% 
@@ -130,6 +138,11 @@ ggsave(filename = "y19-vistaverde-mesos-overall.jpg", p3,
 exp_unit_sums <- dat %>%
   group_by(lure,row) %>%
   summarise(Sum = sum(Count, na.rm = TRUE))
+
+unique(exp_unit_sums$lure)
+# [1] NowBiolure      CidetrakNOW_1in CidetrakNOW_4in CidetrakNOW_8in AldTCP_1in      AldTCP_4in     
+# [7] AldTCP_12in     BiolurePpo     
+# 8 Levels: NowBiolure CidetrakNOW_1in CidetrakNOW_4in CidetrakNOW_8in AldTCP_1in AldTCP_4in ... BiolurePpo
 
 # output experimental unit means for SAS
 #write.csv(exp_unit_sums,"./data/dat2.csv", row.names = FALSE)
