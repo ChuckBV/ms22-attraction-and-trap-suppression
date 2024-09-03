@@ -15,6 +15,19 @@ library(emmeans)
 # Load data
 dat <- readRDS("./data/y19_md_trapsums.Rds")
 #     NB lure and row both are and ought to be factors
+head(dat)
+#         lure row Sum
+# 1 NowBiolure   1   0
+# 2 NowBiolure   2   0
+# 3 NowBiolure   3   0
+# 4 NowBiolure   4   0
+# 5 NowBiolure   5   1
+# 6 NowBiolure   6   0
+
+unique(dat$lure)
+# [1] NowBiolure      CidetrakNOW_1in CidetrakNOW_4in CidetrakNOW_8in AldTCP_1in      AldTCP_4in     
+# [7] AldTCP_12in     BiolurePpo     
+# 8 Levels: NowBiolure CidetrakNOW_1in CidetrakNOW_4in CidetrakNOW_8in AldTCP_1in AldTCP_4in ... BiolurePpo
 
 # Didn't actually get sums
 
