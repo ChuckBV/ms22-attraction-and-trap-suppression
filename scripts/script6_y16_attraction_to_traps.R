@@ -3,15 +3,16 @@
 # Last revised: 2018-10-29 / 2022-08-03
 #
 # Examines wing trap counts comparing meso-dispenser segments and monitoring
-# lures. Conducted in the Parlier area in October. Provides mean and SE,
-# non-parametric stats, and a non-presentation box plot courtesy of DescTools
+# lures. Conducted in the Parlier area in October. Provides mean and SE.
+# Univariate t-tests used with the two attractants with non-0 trap capture,
+# demonstrating that they are significantly greater than 0 but not significantly
+# different.
 #
 # PARTS
 # 0. Declare libraries and functions (line 15)
 # 1. Import data (line 28)
 # 2. Produce summary statistics (line 60)
-# 3. Plot the data (line 73)
-# 4. Perform non-parametric ANOVA (line 94)
+# 3. Perform t-tests
 # 
 #============================================================================
 
@@ -21,7 +22,7 @@
 library(tidyverse)
 library(lubridate)
 library(FSA)
-library(DescTools)
+#library(DescTools)
 
 #-- 1. Import data ---------------------------------------------------------
 
@@ -50,7 +51,7 @@ Means <- dat %>% group_by(Trt) %>%
             mn = mean(Count),
             sem = se(Count)) 
 
-Means$meansep <- c("a","b","b")
+#Means$meansep <- c("a","b","b")
 Means
 # A tibble: 3 x 5
 # Trt      nObs    mn   sem meansep
@@ -64,7 +65,7 @@ Means
 p <- ggplot(Means, aes(y=mn, x=Trt)) +
   geom_col() +
   geom_errorbar(mapping = aes(ymin = mn, ymax = mn + sem), width = 0.2) +
-  geom_text(data = Means, aes(label=meansep, x = Trt, y = mn, hjust= 0, vjust= - 8),  inherit.aes = FALSE) +
+  #geom_text(data = Means, aes(label=meansep, x = Trt, y = mn, hjust= 0, vjust= - 8),  inherit.aes = FALSE) +
   theme_bw() +
   #scale_x_discrete(labels = c("Phero", "Ald+TCP", "Ald" )) +
   ylab("Adults per trap") +
@@ -95,6 +96,18 @@ t.test(dat$Count[dat$Trt == "Ald+TCP"])
 #   mean of x 
 #   2.875 
 
+t.test(dat$Count[dat$Trt == "Phero"])
+
+# One Sample t-test
+# 
+# data:  dat$Count[dat$Trt == "Phero"]
+# t = 3.7417, df = 7, p-value = 0.007247
+# alternative hypothesis: true mean is not equal to 0
+# 95 percent confidence interval:
+#   2.576193 11.423807
+# sample estimates:
+#   mean of x 
+# 7 
 
 # Is the mean of Ald+TCP different from Phero? No
 dat2 <- dat %>% 
