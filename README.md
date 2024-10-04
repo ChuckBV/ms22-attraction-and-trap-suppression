@@ -28,6 +28,8 @@ trap suppression experiments in 2016. Relevant repos are:
  - script6_*.R: Mean and SE with univariate confidence interval (t-test)
  for traps with 2.5 cm segments of 1-component or 2-component dispenser,
  or pheromone monitoring lure.
+ - script11_*.R: Provides summary of the daily high and low air temperature
+ during the three intervals of the 2016 trap suppression experiment
  
 ### Scrips 7-10: 2019 attraction comparison using sticky traps
  - script7_*.R: Means and SE for 8 treatments in non-mating disruption orchard. 
