@@ -49,12 +49,22 @@ Provides summary of the daily high and low air temperature during the three
 intervals of the 2016 trap suppression experiment
  
 ### Scrips 7-10: 2019 attraction comparison using sticky traps
- - script7_*.R: Means and SE for 8 treatments in non-mating disruption orchard. 
- Outputs Table 3.
- - script8_*.R: 1-way mixed-model ANOVA (GLMM w nb) for capture in sticky traps
- in a non-mating disruption orchard.
- - script7_*.R: Means and SE for 8 treatments in mating disruption orchard. 
- Outputs Table 4.
- - script8_*.R: 1-way mixed-model ANOVA (GLMM w nb) for capture in sticky traps
- in a mating disruption orchard.
+
+***script08_y19_nomd.R*** 
+ 
+Means and SE for 8 treatments in non-mating disruption orchard. Outputs Table 3.
+
+***script09_y19_md.R***
+
+1-way mixed-model ANOVA (GLMM w nb) for capture in sticky traps in a non-mating 
+disruption orchard.
+
+***script10_y19_nonmd_stats.R***
+
+Means and SE for 8 treatments in mating disruption orchard. Outputs Table 4.
+
+***script11_y19_md_stats.R***
+
+1-way mixed-model ANOVA (GLMM w nb) for capture in sticky traps in a mating 
+disruption orchard.
  
