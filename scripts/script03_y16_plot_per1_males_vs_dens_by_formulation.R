@@ -15,7 +15,6 @@ library(ggpubr)
 #---------------------------------------------------------------------------#
 #-- 1. Load data and get mean and SE by group -------------------------------
 
-# Load data
 dat <- readRDS("./data/y16_md_trap_suppression.Rds")
 
 # Get mean and SE by group 

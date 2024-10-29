@@ -1,13 +1,17 @@
 #============================================================================
 # script5_y16_plot_per3_males_vs_dens_by_formulation.R
 #
-# 
+# 1. Load data and get mean and SE by group (line 12)
+# 2. Create and save plots based on means and SE output (line 40)
+#
 #============================================================================
 
 library(tidyverse)
 library(ggpubr)
 
-# Load data
+#---------------------------------------------------------------------------#
+#-- 1. Load data and get mean and SE by group -------------------------------
+
 dat <- readRDS("./data/y16_md_trap_suppression.Rds")
 
 # Get mean and SE by group for Period 3 
@@ -32,6 +36,9 @@ md_means
 # 4 Ald+TCP    17     4 12.2  3.30 
 # 5 Ald+TCP    30     4  3.75 1.70 
 # 6 Ald+TCP    69     4  1    0.707
+
+#---------------------------------------------------------------------------#
+#-- 2. Create and save plots based on means and SE output -------------------
 
 # Make density into a factor
 md_means$PerHa <- factor(md_means$PerHa, levels = unique(md_means$PerHa))
