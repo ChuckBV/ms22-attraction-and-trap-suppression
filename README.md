@@ -48,7 +48,7 @@ segments of 1-component or 2-component dispenser or pheromone monitoring lure.
 Provides summary of the daily high and low air temperature during the three 
 intervals of the 2016 trap suppression experiment
  
-### Scrips 7-10: 2019 attraction comparison using sticky traps
+### Scrips 8-11: 2019 attraction comparison using sticky traps
 
 ***script08_y19_nomd.R*** 
  
