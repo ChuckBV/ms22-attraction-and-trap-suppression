@@ -9,7 +9,6 @@
 #
 # 1-way ANOVA of Ald + TCP found signficant differences (Wald chisqr = 76.664,
 # df = 2; P < 0.0001); sep was a,b,c
-
 #
 # PARTS
 # 1. Read data as found in the SAS scrip (line 117)

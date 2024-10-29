@@ -4,10 +4,16 @@
 # Create ggplots, and print a two part plot
 # Vertical bar charts with SE and mean separators
 # 
+# 1. Load data and get mean and SE by group (Line 16)
+# 2. Create and save plots based on means and SE output (Line 46)
+#
 #============================================================================
 
 library(tidyverse)
 library(ggpubr)
+
+#---------------------------------------------------------------------------#
+#-- 1. Load data and get mean and SE by group -------------------------------
 
 # Load data
 dat <- readRDS("./data/y16_md_trap_suppression.Rds")
@@ -35,6 +41,9 @@ md_means
 # 4 Ald+TCP    17     4 62.5  16.0  
 # 5 Ald+TCP    30     4 14.8   3.64 
 # 6 Ald+TCP    69     4  3     0.816
+
+#---------------------------------------------------------------------------#
+#-- 2. Create and save plots based on means and SE output -------------------
 
 # Make density into a factor
 md_means$PerHa <- factor(md_means$PerHa, levels = unique(md_means$PerHa))

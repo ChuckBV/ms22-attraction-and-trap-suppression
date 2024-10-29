@@ -2,18 +2,16 @@
 # script1_y16_trap_md_ctrl_pct_suppression.R
 #
 # PARTS
-# 0. Declare libraries and functions (line 15)
 # 1. Import data (line 28)
-# 2. MD (all) vs control (line 60)
+# 2. MD (all) vs control (line 46)
 # 3. Kruskal test ctrl vs md by period (line 92)
 # 
 #============================================================================
 
-
-#-- 0. Declare libraries and functions --------------------------------------
 library(tidyverse) 
 library(FSA)
 
+#---------------------------------------------------------------------------#
 #-- 1. Import data ----------------------------------------------------------
 all <- readRDS("./data/y16_md_trap_suppression.Rds")
 all
@@ -44,6 +42,7 @@ all
 ### Save data in cleaned form
 write.csv(all, "./Data/intermediate/Suppression_cleaned.csv", row.names = FALSE)
 
+#---------------------------------------------------------------------------#
 #--2. MD (all) vs control ---------------------------------------------------
 
 ### Compare numbers between the 1 non-MD (reference) plot and the six
@@ -89,6 +88,7 @@ Md_per
 ### Trap suppresion, Period 1
 100*(1 - 5.5/248) #97.8%
 
+#---------------------------------------------------------------------------#
 #--3. Kruskal test ctrl vs md by period -------------------------------------
 
 ### Statistical sig, Period 1
@@ -125,3 +125,5 @@ kruskal.test(per3$Plotsum,per3$MdStatus)
 # data:  per3$Plotsum and per3$MdStatus
 # Kruskal-Wallis chi-squared = 10.063, df = 1, p-value = 0.001513
 
+
+all <- readRDS("./data/y16_md_trap_suppression.Rds")
