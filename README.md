@@ -28,6 +28,13 @@ Mean trap capture by dispenser density plotted separately for period 1
 GlMM w nb, initially factorial then separate 1-way ANOVAs for 1- and 2-component 
 dispensers (for period 1)
 
+***script03a_y16_plot_variability_per1.R*** 
+
+Re-examines Period 1 using an OLS 2-way ANOVA with rep as a fixed factor,
+to get a P value for differences among replicate blocks. Also plots
+plot sum of moths by dispenser densities as point and line plots with
+separate data points for each rep. 
+
 ***script04_y16_trap_suppression_per3_stats.R***
 
 Mean trap capture by dispenser density plotted separately for period 3 
@@ -37,6 +44,10 @@ Mean trap capture by dispenser density plotted separately for period 3
 
 GlMM w nb, initially factorial then separate 1-way ANOVAs for 1- and 2-component 
 dispensers (for period 3).
+
+***script05a_y16_plot_variability_per3.R*** 
+
+Same as script03a*.R, except examines Period 3 rather than period 1. 
  
 ***script06_y16_attraction_to_traps.R***
 

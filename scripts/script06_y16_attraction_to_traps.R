@@ -62,6 +62,7 @@ Means
 
 #-- 3. Plot the data --------------------------------------------------------
 
+# Plots Means as a verical bar chart with error bars 
 p <- ggplot(Means, aes(y=mn, x=Trt)) +
   geom_col() +
   geom_errorbar(mapping = aes(ymin = mn, ymax = mn + sem), width = 0.2) +
