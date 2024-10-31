@@ -1,5 +1,5 @@
 #============================================================================
-# script7_y19_nonmd.R
+# script08_y19_nomd.R
 #
 # Read and graph data from an August 2019 experiment comparing NOW trapping
 # with sections of MESO (mating disruption) dispensers with Ald only, or
@@ -8,28 +8,25 @@
 #
 # 1. Read in data, show monitoring intervals (line 21)
 # 2. Numerical means and SE in table (line 41)
-# 3. Box plot of treatment effects (line 82)
-# 4. Stats--Kruskal-Wallis, and... (line 107)
+# 3. Vertical bar chart with error bar (line 82) (but table used in ms)
 #
 #============================================================================
 
 library(tidyverse)
-library(lubridate)
-library(DescTools)
 library(scales)
 library(FSA) # for SE function and Dunn Test
 
 #-- 1. Read in data -----------------------------------------
 
 ### Read in data file and convert date data types
-mwoolf <- read_csv("./data/y19-mike-woolf-meso-lures-data.csv")
+nonmd <- read_csv("./data/y19a-nonmd_pist_attractants_data.csv")
 
 # convert from datetime
-mwoolf$StartDate <- as.Date(mdy(mwoolf$StartDate))
-mwoolf$EndDate <- as.Date(mdy(mwoolf$EndDate))
+nonmd$StartDate <- as.Date(mdy(nonmd$StartDate))
+nonmd$EndDate <- as.Date(mdy(nonmd$EndDate))
 
 # view data set
-head(mwoolf,3)
+head(nonmd,3)
 # A tibble: 3 x 7
 #     row   pos lure        StartDate  EndDate    trap_id Count
 #   <dbl> <dbl> <chr>       <date>     <date>       <dbl> <dbl>
@@ -41,11 +38,11 @@ head(mwoolf,3)
 trt_names <- c("BlankCtrl","CidetrakNOW_1in","CidetrakNOW_4in","CidetrakNOW_8in","AldTCP_1in","AldTCP_4in","AldTCP_12in","NowBiolure")   
 
 ### Specify factors
-mwoolf <- mutate(mwoolf,lure = factor(lure, levels=trt_names))
-mwoolf$row <- as.factor(mwoolf$row)
+nonmd <- mutate(nonmd,lure = factor(lure, levels=trt_names))
+nonmd$row <- as.factor(nonmd$row)
 
 ### Examine by monitoring interval
-mwoolf %>% 
+nonmd %>% 
   group_by(StartDate,EndDate) %>% 
   summarise(nObs = sum(!is.na(Count)))
 # A tibble: 4 x 3
@@ -58,7 +55,7 @@ mwoolf %>%
 # 4 2019-08-21 2019-08-27    64
 
 #-- 2. Numerical means and SE in table --------------------------------------
-exp_unit_means <- mwoolf %>%
+exp_unit_means <- nonmd %>%
   group_by(lure,row) %>%
   summarise(Count = mean(Count, na.rm = TRUE))
 
@@ -106,44 +103,3 @@ p2
 #        path = "./results/",
 #        width = 5.83, height = 3.91, dpi = 300, units = "in", device='jpg')
 
-#-- 4. stats ------------------------------------------
-
-# Pools monitoring intervals (sum rather than mean for analysis)
-exp_unit_sums <- mwoolf %>%
-  group_by(lure,row) %>%
-  summarise(Sum = sum(Count, na.rm = TRUE))
-
-# output for use statistical analysis
-# write.csv(exp_unit_sums,"./data/y19_nonmd_trapsums.csv", row.names = FALSE)
-saveRDS(exp_unit_sums,"./data/y19_nonmd_trapsums.Rds")
-
-# will want descending order for posthoc test
-# exp_unit_sums$lure <- factor(exp_unit_sums$lure, levels = rev(exp_unit_sums$lure))
-trt_names2 <- c("NowBiolure","AldTCP_12in","AldTCP_4in","AldTCP_1in","CidetrakNOW_8in","CidetrakNOW_4in","CidetrakNOW_1in","BlankCtrl")   
-
-exp_unit_sums <- mutate(exp_unit_sums,lure = factor(lure, levels=trt_names2))
-levels(exp_unit_sums$lure)
-# [1] "NowBiolure"      "AldTCP_12in"     "AldTCP_4in"      "AldTCP_1in"      "CidetrakNOW_8in" "CidetrakNOW_4in" "CidetrakNOW_1in" "BlankCtrl"      
-
-# Use Desc to obtain Kruskall-Wallis test
-Desc(Sum ~ lure, data = exp_unit_sums)
-
-# Kruskal-Wallis rank sum test:
-#   Kruskal-Wallis chi-squared = 54.595, df = 7, p-value = 1.793e-09
-
-levels(exp_unit_sums$lure)
-
-# Dunn Test from FSA per https://rcompanion.org/rcompanion/d_06.html
-PT = dunnTest(Sum ~ lure,
-              data=exp_unit_sums,
-              method="bh")    # Can adjust p-values;
-# See ?p.adjust for options
-
-PT
-# Dunn (1964) Kruskal-Wallis multiple comparison
-# p-values adjusted with the Benjamini-Hochberg method.
-
-# Output to Excel because there are 28 comparisons
-p_tble <- PT$res
-write.csv(p_tble,"./output/dunn_test_nomd.csv", row.names = FALSE)
-# This non-param method does not suppor dif between Cidetrak and blank

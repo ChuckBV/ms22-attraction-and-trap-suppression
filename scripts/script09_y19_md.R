@@ -1,5 +1,5 @@
 #============================================================================
-# script7_y19_nonmd.R
+# script09_y19_md.R
 #
 # Read and graph data from an August 2019 experiment comparing NOW trapping
 # with sections of MESO (mating disruption) dispensers with Ald only, or
@@ -9,13 +9,10 @@
 # 1. Read in data, show monitoring intervals (line 21)
 # 2. Numerical means and SE in table (line 41)
 # 3. Box plot of treatment effects (line 82)
-# 4. Stats--Kruskal-Wallis, and... (line 107)
 #
 #============================================================================
 
 library(tidyverse)
-library(lubridate)
-library(DescTools)
 #library(scales)
 library(FSA) # for SE function and Dunn Test
 
@@ -30,16 +27,16 @@ trt_names2 <- c("BiolurePpo","CidetrakNOW_1in","CidetrakNOW_4in","CidetrakNOW_8i
 trt_names2 <- trt_names2[c(8,2:7,1)] # desired order of consideration
 trt_names2
 
-trt_key <- read_csv("./data/y19_nonmd_trt_key.csv")
+trt_key <- read_csv("./data/y19b_nonmd_trt_key.csv")
 trt_key <-select(trt_key,trap_id,lure)
 
 #-- 1. Read in data -----------------------------------------
 
 ### Read in data file and convert date data types
-vverde <- read_csv("./data/y19-vistaverde-meso-lures-data.csv")
-vverde$StartDate <- as.Date(mdy(vverde$StartDate))
-vverde$EndDate <- as.Date(mdy(vverde$EndDate))
-head(vverde,3)
+md_alm <- read_csv("./data/y19c_md_alm_attractants_data.csv")
+md_alm$StartDate <- as.Date(mdy(md_alm$StartDate))
+md_alm$EndDate <- as.Date(mdy(md_alm$EndDate))
+head(md_alm,3)
 # A tibble: 3 x 7
 #     row   pos lure        StartDate EndDate  trap_id Count
 #   <dbl> <dbl> <chr>       <chr>     <chr>      <dbl> <dbl>
@@ -51,7 +48,7 @@ head(vverde,3)
 #  Fixed line 64
 
 ### Merge onto trt_key
-dat <- left_join(trt_key,vverde)
+dat <- left_join(trt_key,md_alm)
 head(dat,3)
 # A tibble: 3 x 7
 # trap_id lure          row   pos StartDate EndDate   Count
@@ -93,7 +90,7 @@ trt_means <- exp_unit_means %>%
             mn = mean(Count, na.rm = TRUE),
             sem = se(Count))
 
-write.csv(trt_means,"./output/expt2_means_se.csv", row.names = FALSE)
+write.csv(trt_means,"./results/expt2_means_se.csv", row.names = FALSE)
 
 trt_means
 # A tibble: 8 x 4
@@ -128,49 +125,7 @@ p3 <- ggplot(trt_means, aes(x = lure, y = mn)) +
 
 p3
 
-ggsave(filename = "y19-vistaverde-mesos-overall.jpg", p3, 
-       path = "./results",
-       width = 5.83, height = 3.91, dpi = 300, units = "in", device='jpg')
+# ggsave(filename = "y19-vistaverde-mesos-overall.jpg", p3, 
+#        path = "./results",
+#        width = 5.83, height = 3.91, dpi = 300, units = "in", device='jpg')
 
-#-- 4. stats ------------------------------------------
-
-# Pools monitoring intervals (sum rather than mean for analysis)
-exp_unit_sums <- dat %>%
-  group_by(lure,row) %>%
-  summarise(Sum = sum(Count, na.rm = TRUE))
-
-unique(exp_unit_sums$lure)
-# [1] NowBiolure      CidetrakNOW_1in CidetrakNOW_4in CidetrakNOW_8in AldTCP_1in      AldTCP_4in     
-# [7] AldTCP_12in     BiolurePpo     
-# 8 Levels: NowBiolure CidetrakNOW_1in CidetrakNOW_4in CidetrakNOW_8in AldTCP_1in AldTCP_4in ... BiolurePpo
-
-# output experimental unit means for SAS
-#write.csv(exp_unit_sums,"./data/dat2.csv", row.names = FALSE)
-saveRDS(exp_unit_sums,"./data/y19_md_trapsums.Rds")
-
-# will want descending order for posthoc test
-trt_names3 <- trt_names2[c(8,6,7,5,3,4,2,1)]   
-exp_unit_sums <- mutate(exp_unit_sums,lure = factor(lure, levels=trt_names3))
-levels(exp_unit_sums$lure)
-# [1] "BiolurePpo"      "AldTCP_4in"      "AldTCP_12in"     "AldTCP_1in"      "CidetrakNOW_4in" "CidetrakNOW_8in" "CidetrakNOW_1in" "NowBiolure"       
-
-# Use Desc to obtain Kruskall-Wallis test
-Desc(Sum ~ lure, data = exp_unit_sums)
-
-# Kruskal-Wallis rank sum test:
-#   Kruskal-Wallis chi-squared = 45.295, df = 7, p-value = 1.199e-07
-
-# Dunn Test from FSA per https://rcompanion.org/rcompanion/d_06.html
-PT = dunnTest(Sum ~ lure,
-              data=exp_unit_sums,
-              method="bh")    
-# Can adjust p-values;
-# See ?p.adjust for options
-
-PT
-# Dunn (1964) Kruskal-Wallis multiple comparison
-# p-values adjusted with the Benjamini-Hochberg method.
-
-# Output to Excel because there are 28 comparisons
-p_tble_md <- PT$res
-write.csv(p_tble_md,"./output/dunn_test_md.csv", row.names = FALSE)

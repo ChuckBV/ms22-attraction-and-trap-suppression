@@ -1,5 +1,5 @@
 #============================================================================
-# Script11_y16_temperatures.R
+# script07_y16_temperatures.R
 # 
 # Reads in a CIMIS max-min tempertature file
 # CIMIS: https://cimis.water.ca.gov/Default.aspx

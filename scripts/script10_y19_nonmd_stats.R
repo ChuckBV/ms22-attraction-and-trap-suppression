@@ -104,3 +104,5 @@ pairs(emmeans_nb)
 
 # Results are given on the log (not the response) scale. 
 # P value adjustment: tukey method for comparing a family of 8 estimates 
+
+cld_result <- emmeans::cld(emmeans_nb, alpha = 0.05, Letters = c(letters, LETTERS))

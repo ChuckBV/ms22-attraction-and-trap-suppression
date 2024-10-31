@@ -1,5 +1,5 @@
 #============================================================================
-# script6_y16_attraction_to_traps.R
+# script06_y16_attraction_to_traps.R
 # Last revised: 2018-10-29 / 2022-08-03
 #
 # Examines wing trap counts comparing meso-dispenser segments and monitoring
